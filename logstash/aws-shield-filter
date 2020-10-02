@@ -1,0 +1,31 @@
+filter {
+  if [pipeline] == "awsshield" {
+    split {
+      field => "AttackSummaries"
+      target => "[aws][shield]"
+    }
+
+    mutate {
+      add_field => {
+        "[ecs][version]" => "1.6"
+        "[event][category]" => "network"
+        "[event][kind]" => "alert"
+        "[event][module]" => "aws"
+        "[event][dataset]" => "aws.shield"
+        "[event][provider]" => "aws-cli"
+        "[threat][framework]" => "MITRE ATT&CK"
+        "[threat][tactic][id]" => "TA0040"
+        "[threat][tactic][name]" => "Impact"
+        "[threat][tactic][reference]" => "https://attack.mitre.org/tactics/TA0040/"
+        "[threat][technique][id]" => "T1498"
+        "[threat][technique][name]" => "Network Denial of Service"
+        "[threat][technique][reference]" => "https://attack.mitre.org/techniques/T1498/"
+        "[cloud][provider]" => "aws"
+      }
+      copy => {
+        "[aws][shield][AttackId]" => "[event][id]"
+      }
+      remove_field => [ "message", "AttackSummaries" ]
+    }
+  }
+}

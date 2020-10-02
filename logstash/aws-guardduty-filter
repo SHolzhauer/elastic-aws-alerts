@@ -1,0 +1,35 @@
+filter {
+  if [pipeline] == "awsguardduty" {
+    if ![Findings] {
+      drop{}
+    } else {
+      split {
+        field => "Findings"
+        target => "[aws][guardduty]"
+      }
+
+      mutate {
+        add_field => {
+          "[ecs][version]" => "1.6"
+          "[event][kind]" => "alert"
+          "[event][module]" => "aws"
+          "[event][dataset]" => "aws.guardduty"
+          "[event][provider]" => "aws-cli"
+          "[@metadata][ES_IndexName]" => "filebeat"
+          "[cloud][provider]" => "aws"
+        }
+        copy => {
+          "[aws][guardduty][Id]" => "[event][id]"
+        }
+        rename => {
+          "[aws][guardduty][AccountId]" => "[cloud][account][id]"
+          "[aws][guardduty][Region]" => "[cloud][region]"
+          "[aws][guardduty][Resource][InstanceDetails][AvailabilityZone]" => "[cloud][availability_zone]"
+          "[aws][guardduty][Resource][InstanceDetails][InstanceId]" => "[cloud][instance][id]"
+          "[aws][guardduty][Resource][InstanceDetails][InstanceType]" => "[cloud][machine][type]"
+        }
+        remove_field => [ "Findings" ]
+      }
+    }
+  }
+}

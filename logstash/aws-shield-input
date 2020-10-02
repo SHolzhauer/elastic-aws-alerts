@@ -1,0 +1,11 @@
+input {
+  exec {
+    command => "/usr/local/bin/aws shield list-attacks --start-time FromInclusive=$(expr $(date '+%s') - 310)"
+    schedule => "*/5 * * * *"
+    codec => json
+    add_field => {
+      "pipeline" => "awsshield"
+      "[@metadata][ES_IndexName]" => "filebeat"
+    }
+  }
+}

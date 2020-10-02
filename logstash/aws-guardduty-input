@@ -1,0 +1,11 @@
+input {
+  exec {
+    command => "/etc/logstash/bash-scripts/generate-guardduty-findings.sh '<your-detector-id>'"
+    schedule => "*/5 * * * *"
+    codec => json
+    add_field => {
+      "pipeline" => "awsguardduty"
+      "[@metadata][ES_IndexName]" => "filebeat"
+    }
+  }
+}

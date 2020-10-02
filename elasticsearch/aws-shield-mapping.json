@@ -1,0 +1,147 @@
+{
+	"order": 99,
+	"index_patterns": [
+		"filebeat-*"
+	],
+  "mappings": {
+		"properties": {
+      "aws": {
+        "properties": {
+          "shield": {
+            "properties": {
+              "AttackId": {
+                "type": "keyword",
+                "ignore_above": 1024
+              },
+              "AttackVectors": {
+                "properties": {}
+              },
+              "EndTime": {},
+              "ResourceArn": {
+                "type": "keyword",
+                "ignore_above": 1024
+              },
+              "StartTime": {}
+            }
+          },
+          "guardduty": {
+            "properties": {
+              "AccountId": {
+                "type": "alias",
+                "path": "cloud.account.id"
+              },
+              "Arn": {
+                "type": "keyword",
+                "ignore_above": 1024
+              },
+              "CreatedAt": {
+                "type": "date"
+              },
+              "Description": {
+                "type": "keyword",
+                "ignore_above": 1024
+              },
+              "Id": {
+                "type": "keyword",
+                "ignore_above": 1024
+              },
+              "Partition": {
+                "type": "keyword",
+                "ignore_above": 1024
+              },
+              "Region": {
+                "type": "alias",
+                "path": "cloud.region"
+              },
+              "Resource": {
+                "properties": {
+                  "InstanceDetails": {
+                    "properties": {
+                      "AvailabilityZone": {
+                        "type": "alias",
+                        "path": "cloud.availability_zone"
+                      },
+                      "IamInstanceProfile": {
+                        "properties": {
+                          "Arn": {
+                            "type": "keyword",
+                            "ignore_above": 1024
+                          },
+                          "Id": {
+                            "type": "keyword",
+                            "ignore_above": 1024
+                          }
+                        }
+                      },
+                      "ImageId": {
+                        "type": "keyword",
+                        "ignore_above": 1024
+                      },
+                      "InstanceId": {
+                        "type": "alias",
+                        "path": "cloud.instance.id"
+                      },
+                      "InstanceState": {
+                        "type": "keyword",
+                        "ignore_above": 1024
+                      },
+                      "InstanceType": {
+                        "type": "alias",
+                        "path": "cloud.machine.type"
+                      },
+                      "LaunchTime": {
+                        "type": "date"
+                      },
+                      "NetworkInterfaces": {
+                        "type": "object"
+                      },
+                      "Platform": {
+                        "type": "keyword",
+                        "ignore_above": 1024
+                      },
+                      "Tags": {
+                        "type": "object"
+                      }
+                    }
+                  },
+                  "ResourceType": {
+                    "type": "keyword",
+                    "ignore_above": 1024
+                  }
+                }
+              },
+              "Service": {
+                "properties": {
+                  "EventFirstSeen": {
+                    "type": "date"
+                  },
+                  "EventLastSeen": {
+                    "type": "date"
+                  },
+                  "ServiceName": {
+                    "type": "keyword",
+                    "ignore_above": 1024
+                  },
+                }
+              },
+              "Severity": {
+                "type": "int"
+              },
+              "Title": {
+                "type": "keyword",
+                "ignore_above": 1024
+              },
+              "Type": {
+                "type": "keyword",
+                "ignore_above": 1024
+              },
+              "UpdatedAt": {
+                "type": "date"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
